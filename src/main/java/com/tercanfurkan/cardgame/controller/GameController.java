@@ -1,6 +1,5 @@
 package com.tercanfurkan.cardgame.controller;
 
-import com.tercanfurkan.cardgame.view.CommandLineView;
 import com.tercanfurkan.cardgame.game.GameEvaluator;
 import com.tercanfurkan.cardgame.model.Deck;
 import com.tercanfurkan.cardgame.model.Player;
