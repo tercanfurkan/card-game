@@ -1,8 +1,10 @@
-package com.tercanfurkan.cardgame;
+package com.tercanfurkan.cardgame.view;
+
+import com.tercanfurkan.cardgame.controller.GameController;
 
 import java.util.Scanner;
 
-public class GameView {
+public class CommandLineView implements GameView {
     GameController controller;
     Scanner keyboard = new Scanner(System.in);
 
@@ -21,6 +23,11 @@ public class GameView {
     }
     public void showWinner(String winnerName) {
         System.out.println(winnerName + " is the winner!");
+    }
+
+    @Override
+    public void showFailedToStart(String reason) {
+        System.out.println(reason);
     }
 
     public void promptForPlayerName() {
@@ -42,6 +49,6 @@ public class GameView {
     public void promptForNewGame() {
         System.out.println("Press enter to start a new game:");
         keyboard.nextLine();
-        controller.startGame();
+        controller.restartGame();
     }
 }

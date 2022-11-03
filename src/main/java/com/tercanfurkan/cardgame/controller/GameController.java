@@ -1,17 +1,26 @@
-package com.tercanfurkan.cardgame;
+package com.tercanfurkan.cardgame.controller;
 
+import com.tercanfurkan.cardgame.view.CommandLineView;
+import com.tercanfurkan.cardgame.game.GameEvaluator;
 import com.tercanfurkan.cardgame.model.Deck;
 import com.tercanfurkan.cardgame.model.Player;
 import com.tercanfurkan.cardgame.model.PlayingCard;
+import com.tercanfurkan.cardgame.view.GameView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameController {
+
     enum GameState {
         AddingPlayers,
         CardsDealt,
         WinnerRevealed
+    }
+
+    enum StartFailureReason {
+        NotEnoughPlayers,
+        UnkownReason
     }
 
     GameView view;
@@ -19,10 +28,12 @@ public class GameController {
     List<Player> players;
     Player winner;
     GameState gameState;
+    GameEvaluator evaluator;
     
-    public GameController(GameView view, Deck deck) {
+    public GameController(GameView view, Deck deck, GameEvaluator evaluator) {
         this.view = view;
         this.deck = deck;
+        this.evaluator = evaluator;
         players = new ArrayList<>();
         gameState = GameState.AddingPlayers;
         view.setController(this);
@@ -51,7 +62,10 @@ public class GameController {
         }
     }
     public void startGame() {
-        if (gameState != GameState.CardsDealt) {
+        if (players.isEmpty()) {
+            view.showFailedToStart("Unable to start without players");
+            view.promptForPlayerName();
+        } else if(gameState != GameState.CardsDealt) {
             deck.shuffle();
             int playerIndex = 1;
             for (Player player : players) {
@@ -71,44 +85,21 @@ public class GameController {
         evaluateWinner();
         displayWinner();
         gameState = GameState.WinnerRevealed;
+    }
+
+    public void restartGame() {
         rebuildDeck();
+        players = new ArrayList<>();
+        gameState = GameState.AddingPlayers;
     }
 
     void evaluateWinner() {
-        Player bestPlayer = null;
-        int bestRank = -1;
-        int bestSuit = -1;
-
-        for (Player player : players) {
-            boolean newBestPlayer = false;
-
-            if (bestPlayer == null) {
-                newBestPlayer = true;
-            } else {
-                PlayingCard card = player.takeCard(0);
-                int thisRank = card.getRank().value();
-                if (thisRank >= bestRank) {
-                    if (thisRank > bestRank) {
-                        newBestPlayer = true;
-                    } else {
-                        if (card.getSuit().value() > bestSuit) {
-                            newBestPlayer = true;
-                        }
-                    }
-                }
-            }
-            if (newBestPlayer) {
-                bestPlayer = player;
-                PlayingCard card = player.takeCard(0);
-                bestRank = card.getRank().value();
-                bestSuit = card.getSuit().value();
-            }
-        }
-        winner = bestPlayer;
+        winner = evaluator.evaluateWinner(players);
     }
     void displayWinner() {
         view.showWinner(winner.getName());
     }
+
     void rebuildDeck() {
         for (Player player : players) {
             deck.returnCardToDeck(player.putCardBack());
