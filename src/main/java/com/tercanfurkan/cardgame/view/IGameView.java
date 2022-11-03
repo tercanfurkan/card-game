@@ -2,7 +2,7 @@ package com.tercanfurkan.cardgame.view;
 
 import com.tercanfurkan.cardgame.controller.GameController;
 
-public interface GameView {
+public interface IGameView {
 
     public void setController(GameController controller);
 

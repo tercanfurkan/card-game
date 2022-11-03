@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 
-public class SwingGameView implements GameView {
+public class SwingGameView implements IGameView {
     GameController controller;
 
     JButton btnAddPlayer;

@@ -1,12 +1,12 @@
 package com.tercanfurkan.cardgame.game;
 
-import com.tercanfurkan.cardgame.model.Player;
+import com.tercanfurkan.cardgame.model.IPlayer;
 
 import java.util.List;
 
 public class LowCardGameEvaluator implements GameEvaluator {
     @Override
-    public Player evaluateWinner(List<Player> players) {
+    public IPlayer evaluateWinner(List<IPlayer> players) {
         return null;
     }
 }

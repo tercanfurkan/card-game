@@ -1,22 +1,13 @@
-package com.tercanfurkan.cardgame.model;
+package com.tercanfurkan.cardgame.model.deck;
 
-import java.util.ArrayList;
+import com.tercanfurkan.cardgame.model.PlayingCard;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Deck {
+public abstract class Deck {
     List<PlayingCard> cards;
-
-    public Deck() {
-        cards = new ArrayList<>();
-        for (Rank rank : Rank.values()) {
-            for (Suit suit : Suit.values()) {
-                System.out.println("Creating card: [" + rank + ", " + suit + "]");
-                cards.add(new PlayingCard(rank, suit));
-            }
-        }
-    }
 
     public void shuffle() {
         Random random = new Random();

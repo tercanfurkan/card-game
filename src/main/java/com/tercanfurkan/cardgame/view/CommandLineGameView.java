@@ -4,7 +4,7 @@ import com.tercanfurkan.cardgame.controller.GameController;
 
 import java.util.Scanner;
 
-public class CommandLineGameView implements GameView {
+public class CommandLineGameView implements IGameView {
     GameController controller;
     Scanner keyboard = new Scanner(System.in);
 

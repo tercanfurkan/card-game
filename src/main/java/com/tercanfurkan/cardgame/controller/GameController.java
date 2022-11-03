@@ -1,10 +1,12 @@
 package com.tercanfurkan.cardgame.controller;
 
 import com.tercanfurkan.cardgame.game.GameEvaluator;
-import com.tercanfurkan.cardgame.model.Deck;
+import com.tercanfurkan.cardgame.model.IPlayer;
 import com.tercanfurkan.cardgame.model.Player;
+import com.tercanfurkan.cardgame.model.WinningPlayer;
+import com.tercanfurkan.cardgame.model.deck.Deck;
 import com.tercanfurkan.cardgame.model.PlayingCard;
-import com.tercanfurkan.cardgame.view.GameView;
+import com.tercanfurkan.cardgame.view.IGameView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,19 +19,14 @@ public class GameController {
         WinnerRevealed
     }
 
-    enum StartFailureReason {
-        NotEnoughPlayers,
-        UnkownReason
-    }
-
-    GameView view;
+    IGameView view;
     Deck deck;
-    List<Player> players;
-    Player winner;
+    List<IPlayer> players;
+    IPlayer winner;
     GameState gameState;
     GameEvaluator evaluator;
     
-    public GameController(GameView view, Deck deck, GameEvaluator evaluator) {
+    public GameController(IGameView view, Deck deck, GameEvaluator evaluator) {
         this.view = view;
         this.deck = deck;
         this.evaluator = evaluator;
@@ -67,7 +64,7 @@ public class GameController {
         } else if(gameState != GameState.CardsDealt) {
             deck.shuffle();
             int playerIndex = 1;
-            for (Player player : players) {
+            for (IPlayer player : players) {
                 player.addCardToHand(deck.removeTopCard());
                 view.showFaceDownCardForPlayer(playerIndex++, player.getName());
             }
@@ -76,7 +73,7 @@ public class GameController {
     }
     public void flipCards() {
         int playerIndex = 1;
-        for (Player player : players) {
+        for (IPlayer player : players) {
             PlayingCard card = player.takeCard(0);
             card.flip();
             view.showCardForPlayer(playerIndex++, player.getName(), card.getRank().toString(), card.getSuit().toString());
@@ -93,14 +90,14 @@ public class GameController {
     }
 
     void evaluateWinner() {
-        winner = evaluator.evaluateWinner(players);
+        winner = new WinningPlayer(evaluator.evaluateWinner(players));
     }
     void displayWinner() {
         view.showWinner(winner.getName());
     }
 
     void rebuildDeck() {
-        for (Player player : players) {
+        for (IPlayer player : players) {
             deck.returnCardToDeck(player.putCardBack());
         }
     }
