@@ -22,7 +22,7 @@ public class SwingGameView implements IGameView {
     JButton btnDealCards;
     JButton btnFindWinner;
     JTextArea textArea;
-    char nextPlayerName = 'A';
+    static char nextPlayerName = 'A';
 
     public SwingGameView() {
         createAndShowGUI();
@@ -41,10 +41,23 @@ public class SwingGameView implements IGameView {
         addAddPlayerButton(contentPane);
         addDealCardsButton(contentPane);
         addFindWinnerButton(contentPane);
+        addNewWindow(contentPane);
 
         addControllerCommandTracker(contentPane);
 
         frame.setVisible(true);
+    }
+
+    private void addNewWindow(Container contentPane) {
+        JButton btnAddWindow = new JButton("Add Window");
+        addCenteredComponent(btnAddWindow, contentPane);
+        btnAddWindow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingGameView view = new SwingGameView();
+                controller.addView(view);
+            }
+        });
     }
 
     // when clicked, tell controller to add a player of the given name
