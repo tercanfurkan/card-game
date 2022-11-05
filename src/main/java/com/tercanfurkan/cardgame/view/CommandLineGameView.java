@@ -22,7 +22,7 @@ public class CommandLineGameView implements IGameView {
         System.out.println("[" + playerIndex + "][" + name + "][" + rank +"][" + suit +"]");
     }
     public void showWinner(String winnerName) {
-        System.out.println(winnerName + " is the winner!");
+        System.out.println("The winner is: " + winnerName);
     }
 
     @Override

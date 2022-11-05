@@ -69,7 +69,6 @@ public class SwingGameView implements IGameView {
         addCenteredComponent (btnAddPlayer, contentPane);
         btnAddPlayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                textArea.append("Current players:\n");
                 controller.addPlayer("Player " + nextPlayerName++);
             }
         });
@@ -81,7 +80,6 @@ public class SwingGameView implements IGameView {
         addCenteredComponent(btnDealCards, contentPane);
         btnDealCards.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                textArea.append("Cards dealt:\n");
                 controller.startGame();
             }
         });
@@ -93,7 +91,6 @@ public class SwingGameView implements IGameView {
         addCenteredComponent(btnFindWinner, contentPane);
         btnFindWinner.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                textArea.append("Show your cards:\n");
                 controller.flipCards();
             }
         });
@@ -159,7 +156,6 @@ public class SwingGameView implements IGameView {
 
     @Override
     public void promptForPlayerName() {
-        System.out.println("Enter Player Name:");
         // it's ok to add names
         btnAddPlayer.setEnabled(true);
 
@@ -172,8 +168,6 @@ public class SwingGameView implements IGameView {
 
     @Override
     public void promptForFlip() {
-        System.out.println("Press enter to reveal cards");
-
         // past the time to add names
         btnAddPlayer.setEnabled(false);
 
@@ -186,8 +180,6 @@ public class SwingGameView implements IGameView {
 
     @Override
     public void promptForNewGame() {
-        System.out.println("Press enter to deal again");
-
         // past the time to add names
         btnAddPlayer.setEnabled(false);
 
