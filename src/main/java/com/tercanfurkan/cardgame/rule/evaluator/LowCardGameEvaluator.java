@@ -10,7 +10,7 @@ public class LowCardGameEvaluator implements GameEvaluator {
     public IPlayer evaluateWinner(List<IPlayer> players) {
         return players
                 .stream()
-                .min(Comparator.comparing(player -> player.takeCard(0)))
+                .min(Comparator.comparing(IPlayer::getCard))
                 .orElseThrow();
     }
 }

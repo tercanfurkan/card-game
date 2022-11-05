@@ -17,11 +17,11 @@ public class Player implements IPlayer {
         return name;
     }
 
-    public PlayingCard takeCard(int index) {
-        return hand.getCard(index);
+    public PlayingCard getCard() {
+        return hand.getCard();
     }
 
-    public PlayingCard putCardBack() {
+    public PlayingCard giveCard() {
         return hand.removeCard();
     }
 }

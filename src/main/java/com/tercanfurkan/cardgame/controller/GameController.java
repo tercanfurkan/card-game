@@ -1,11 +1,11 @@
 package com.tercanfurkan.cardgame.controller;
 
-import com.tercanfurkan.cardgame.rule.evaluator.GameEvaluator;
 import com.tercanfurkan.cardgame.model.IPlayer;
 import com.tercanfurkan.cardgame.model.Player;
+import com.tercanfurkan.cardgame.model.PlayingCard;
 import com.tercanfurkan.cardgame.model.WinningPlayer;
 import com.tercanfurkan.cardgame.model.deck.Deck;
-import com.tercanfurkan.cardgame.model.PlayingCard;
+import com.tercanfurkan.cardgame.rule.evaluator.GameEvaluator;
 import com.tercanfurkan.cardgame.view.GameViews;
 import com.tercanfurkan.cardgame.view.IGameView;
 
@@ -91,7 +91,7 @@ public class GameController {
     public void flipCards() {
         int playerIndex = 1;
         for (IPlayer player : players) {
-            PlayingCard card = player.takeCard(0);
+            PlayingCard card = player.getCard();
             card.flip();
             views.showCardForPlayer(playerIndex++, player.getName(), card.getRank().toString(), card.getSuit().toString());
         }
@@ -115,7 +115,7 @@ public class GameController {
 
     void rebuildDeck() {
         for (IPlayer player : players) {
-            deck.returnCardToDeck(player.putCardBack());
+            deck.returnCardToDeck(player.giveCard());
         }
     }
 }

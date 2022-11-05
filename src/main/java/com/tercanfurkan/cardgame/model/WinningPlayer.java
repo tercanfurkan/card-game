@@ -18,12 +18,12 @@ public class WinningPlayer implements IPlayer {
     }
 
     @Override
-    public PlayingCard takeCard(int index) {
+    public PlayingCard getCard() {
         return null;
     }
 
     @Override
-    public PlayingCard putCardBack() {
+    public PlayingCard giveCard() {
         return null;
     }
 }

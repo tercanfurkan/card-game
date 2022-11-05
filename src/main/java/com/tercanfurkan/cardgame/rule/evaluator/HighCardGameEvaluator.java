@@ -10,7 +10,7 @@ public class HighCardGameEvaluator implements GameEvaluator {
     public IPlayer evaluateWinner(List<IPlayer> players) {
         return players
                 .stream()
-                .max(Comparator.comparing(player -> player.takeCard(0)))
+                .max(Comparator.comparing(IPlayer::getCard))
                 .orElseThrow();
     }
 }

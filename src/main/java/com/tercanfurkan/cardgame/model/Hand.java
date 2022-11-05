@@ -14,8 +14,8 @@ public class Hand {
         cards.add(card);
     }
 
-    public PlayingCard getCard(int index) {
-        return cards.get(index);
+    public PlayingCard getCard() {
+        return cards.get(0);
     }
 
     public PlayingCard removeCard() {

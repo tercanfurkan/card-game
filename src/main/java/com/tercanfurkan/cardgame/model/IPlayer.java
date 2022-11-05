@@ -5,7 +5,7 @@ public interface IPlayer {
 
     String getName();
 
-    PlayingCard takeCard(int index);
+    PlayingCard getCard();
 
-    PlayingCard putCardBack();
+    PlayingCard giveCard();
 }
