@@ -1,6 +1,6 @@
 package com.tercanfurkan.cardgame.model;
 
-public class PlayingCard {
+public class PlayingCard implements Comparable<PlayingCard> {
     Rank rank;
     Suit suit;
     boolean faceUp;
@@ -25,5 +25,20 @@ public class PlayingCard {
 
     public void flip() {
         this.faceUp = !faceUp;
+    }
+
+    @Override
+    public int compareTo(PlayingCard o) {
+        if (this.getRank().value() > o.getRank().value()) {
+            return 1;
+        } else if (this.getRank().value() < o.getRank().value()){
+            return -1;
+        } else {
+            if (this.getSuit().value() >= o.getSuit().value()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
     }
 }

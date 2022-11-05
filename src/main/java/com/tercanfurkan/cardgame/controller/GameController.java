@@ -1,6 +1,6 @@
 package com.tercanfurkan.cardgame.controller;
 
-import com.tercanfurkan.cardgame.game.GameEvaluator;
+import com.tercanfurkan.cardgame.rule.evaluator.GameEvaluator;
 import com.tercanfurkan.cardgame.model.IPlayer;
 import com.tercanfurkan.cardgame.model.Player;
 import com.tercanfurkan.cardgame.model.WinningPlayer;

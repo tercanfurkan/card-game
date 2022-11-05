@@ -1,12 +1,11 @@
-package com.tercanfurkan.cardgame;
+package com.tercanfurkan.cardgame.game;
 
 import com.tercanfurkan.cardgame.controller.GameController;
-import com.tercanfurkan.cardgame.game.HighCardGameEvaluator;
-import com.tercanfurkan.cardgame.model.deck.Deck;
+import com.tercanfurkan.cardgame.rule.evaluator.HighCardGameEvaluator;
 import com.tercanfurkan.cardgame.model.deck.DeckFactory;
 import com.tercanfurkan.cardgame.view.SwingGameView;
 
-public class DesktopCardGame {
+public class GUIGame {
 
     public static void main(String[] args) {
         GameController controller = new GameController(
