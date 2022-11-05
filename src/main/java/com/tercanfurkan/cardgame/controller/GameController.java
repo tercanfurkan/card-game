@@ -1,5 +1,9 @@
 package com.tercanfurkan.cardgame.controller;
 
+import com.tercanfurkan.cardgame.controller.state.AddingViewState;
+import com.tercanfurkan.cardgame.controller.state.AddingPlayersState;
+import com.tercanfurkan.cardgame.controller.state.CardsDealtState;
+import com.tercanfurkan.cardgame.controller.state.GameState;
 import com.tercanfurkan.cardgame.model.IPlayer;
 import com.tercanfurkan.cardgame.model.Player;
 import com.tercanfurkan.cardgame.model.PlayingCard;
@@ -14,32 +18,33 @@ import java.util.List;
 
 public class GameController {
 
-    enum GameState {
-        AddingPlayers,
-        CardsDealt,
-        WinnerRevealed,
-        AddingView
-    }
-
     GameViews views;
     Deck deck;
     List<IPlayer> players;
     IPlayer winner;
-    GameState gameState;
     GameEvaluator evaluator;
+    GameState gameState;
     
     public GameController(IGameView view, Deck deck, GameEvaluator evaluator) {
         this.views = new GameViews();
         this.deck = deck;
         this.evaluator = evaluator;
         players = new ArrayList<>();
-        gameState = GameState.AddingPlayers;
-        addView(view);
+        view.setController(this);
+        views.addGameView(view);
+        gameState = new AddingPlayersState(this, views);
+    }
+
+    public void setState(GameState newState) {
+        gameState = newState;
+    }
+
+    public GameState getState() {
+        return gameState;
     }
 
     public void addView(IGameView view) {
-        GameState currentState = gameState;
-        gameState = GameState.AddingView;
+        gameState = new AddingViewState(this, views);
         view.setController(this);
         views.addGameView(view);
         try {
@@ -47,45 +52,32 @@ public class GameController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        gameState = currentState;
+        gameState.next();
     }
 
     public void run() {
-        while (true) {
-            switch (gameState) {
-                case AddingPlayers:
-                    views.promptForPlayerName();
-                    break;
-                case CardsDealt:
-                    views.promptForFlip();
-                    break;
-                case WinnerRevealed:
-                    views.promptForNewGame();
-                    break;
-                case AddingView:
-                    break;
-            }
-        }
+        views.promptForPlayerName();
     }
 
     public void addPlayer(String playerName) {
-        if (gameState == GameState.AddingPlayers) {
+        if (gameState instanceof AddingPlayersState) {
             players.add(new Player(playerName));
             views.showPlayerName(players.size(), playerName);
+            views.promptForPlayerName();
         }
     }
     public void startGame() {
         if (players.isEmpty()) {
             views.showFailedToStart("Unable to start without players");
             views.promptForPlayerName();
-        } else if(gameState != GameState.CardsDealt) {
+        } else if(!(gameState instanceof CardsDealtState)) {
             deck.shuffle();
             int playerIndex = 1;
             for (IPlayer player : players) {
                 player.addCardToHand(deck.removeTopCard());
                 views.showFaceDownCardForPlayer(playerIndex++, player.getName());
             }
-            gameState = GameState.CardsDealt;
+            gameState.next();
         }
     }
     public void flipCards() {
@@ -97,13 +89,13 @@ public class GameController {
         }
         evaluateWinner();
         displayWinner();
-        gameState = GameState.WinnerRevealed;
+        gameState.next();
     }
 
     public void restartGame() {
         rebuildDeck();
         players = new ArrayList<>();
-        gameState = GameState.AddingPlayers;
+        gameState.next();
     }
 
     void evaluateWinner() {
