@@ -68,7 +68,7 @@ public class GameController {
     }
     public void startGame() {
         if (players.isEmpty()) {
-            views.showFailedToStart("Unable to start without players");
+            views.showFailedToStart("Please add players to start");
             views.promptForPlayerName();
         } else if(!(gameState instanceof CardsDealtState)) {
             deck.shuffle();
